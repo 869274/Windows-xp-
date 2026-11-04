@@ -6,16 +6,37 @@
   <title>RetroCore Windows 5.0 – Ultimate Edition</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; font-family: Tahoma, 'Segoe UI', sans-serif; font-size: 11px; user-select: none; background: #5d9ce6; }
-    body { background: url('https://www.windowslatest.com/wp-content/uploads/2024/10/Windows-XP-Bliss-Wallpaper-4K-scaled.jpg') center / cover no-repeat; }
+    html, body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; font-family: Tahoma, 'Segoe UI', sans-serif; font-size: 11px; user-select: none; -webkit-user-select: none; touch-action: manipulation; cursor: default; background: #000; }
+    body { background: url('https://www.windowslatest.com/wp-content/uploads/2024/10/Windows-XP-Bliss-Wallpaper-4K-scaled.jpg') center / cover no-repeat #5d9ce6; position: relative; }
     :root { --blue: #245edb; --header: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #1b4ca3 100%); --taskbar: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #1b4ca3 92%, #163b7e 100%); }
-    #boot-screen { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; }
-    #boot-screen small { display: block; font-size: 13px; text-align: center; margin-top: 16px; }
-    #desktop { height: calc(100vh - 30px); padding: 15px; display: flex; flex-direction: column; flex-wrap: wrap; align-content: flex-start; gap: 18px; }
-    .desktop-icon { width: 90px; padding: 5px; text-align: center; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-shadow: 2px 2px 3px #000; }
+
+    /* Original Windows XP-style startup screen */
+    #boot-screen { position: fixed; inset: 0; background: #000; z-index: 9999999; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; }
+    #boot-screen::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,.02), rgba(255,255,255,.01) 50%, rgba(255,255,255,.02)); background-size: 100% 6px; opacity: .2; pointer-events: none; }
+    .boot-wrap { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translateY(-14px); z-index: 1; }
+    .xp-logo { position: relative; width: 120px; height: 90px; margin-bottom: 20px; transform: skewX(-8deg); filter: drop-shadow(0 0 12px rgba(255,255,255,.08)); }
+    .xp-logo .pane { position: absolute; width: 48px; height: 38px; border-radius: 5px 12px 5px 12px; overflow: hidden; }
+    .xp-logo .pane.red { background: linear-gradient(135deg,#f3432d,#be2011); left: 0; top: 0; }
+    .xp-logo .pane.green { background: linear-gradient(135deg,#85cf3d,#498d22); left: 51px; top: 0; border-radius: 12px 5px 12px 5px; }
+    .xp-logo .pane.blue { background: linear-gradient(135deg,#1b7fe8,#0d4bb3); left: 0; top: 42px; border-radius: 12px 5px 12px 5px; }
+    .xp-logo .pane.yellow { background: linear-gradient(135deg,#f2c229,#d19206); left: 51px; top: 42px; border-radius: 5px 12px 5px 12px; }
+    .boot-brand { text-align: center; line-height: 1; }
+    .microsoft-label { font-size: 13px; letter-spacing: .35px; color: rgba(255,255,255,.92); margin-bottom: 4px; font-weight: 400; }
+    .windows-line { display: inline-flex; align-items: flex-end; gap: 10px; position: relative; }
+    .windows-word { font-size: 58px; letter-spacing: -2px; font-weight: 700; color: #fff; line-height: .9; }
+    .xp-word { font-size: 28px; font-weight: 900; letter-spacing: -1px; color: #ff7b1d; line-height: 1; font-family: 'Arial Black', Impact, sans-serif; transform: translateY(-6px); text-shadow: 0 0 12px rgba(255,140,0,.18); }
+    .boot-progress { position: relative; width: 170px; height: 14px; margin-top: 28px; border: 2px solid #8d8d8d; background: #000; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
+    .boot-progress-fill { position: absolute; inset: 0; overflow: hidden; }
+    .boot-progress-fill::before { content: ''; position: absolute; left: -42%; top: 0; width: 32%; height: 100%; background: linear-gradient(to right,#1456c7 0%,#2b7ef6 20%,#7cb7ff 45%,#2b7ef6 70%,#1456c7 100%); box-shadow: 0 0 12px rgba(74,143,255,.8), inset 0 0 0 1px rgba(255,255,255,.2); animation: xpLoad 2.4s cubic-bezier(.25,.1,.25,1) infinite; }
+    @keyframes xpLoad { 0% { left: -42%; } 100% { left: 112%; } }
+    .boot-footer { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; justify-content: space-between; align-items: center; padding: 0 30px; font-size: 12px; color: rgba(255,255,255,.74); letter-spacing: .15px; z-index: 1; }
+    .boot-footer .right { font-weight: 700; opacity: .9; }
+
+    #desktop { width: 100%; height: calc(100vh - 30px); padding: 15px; display: flex; flex-direction: column; flex-wrap: wrap; align-content: flex-start; gap: 18px; position: relative; z-index: 5; }
+    .desktop-icon { width: 90px; padding: 5px; text-align: center; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-shadow: 2px 2px 3px rgba(0,0,0,.9); font-weight: 500; border: 1px solid transparent; border-radius: 3px; }
     .desktop-icon:hover { background: rgba(255,255,255,.12); }
-    .desktop-icon .icon { font-size: 42px; line-height: 1.1; margin-bottom: 5px; }
-    .window { width: 440px; height: 300px; position: absolute; display: none; z-index: 100; background: #f1f0e8; border: 3px solid var(--blue); border-radius: 7px 7px 0 0; box-shadow: 4px 6px 22px #0006; }
+    .desktop-icon .icon { width: 42px; height: 42px; font-size: 40px; line-height: 1.1; margin-bottom: 5px; filter: drop-shadow(0 2px 0 rgba(0,0,0,.25)); }
+    .window { width: 440px; height: 300px; position: absolute; display: none; z-index: 100; background: #f1f0e8; border: 3px solid var(--blue); border-radius: 7px 7px 0 0; box-shadow: 4px 6px 22px rgba(0,0,0,.4); }
     .window-header { height: 26px; padding: 4px 7px; color: white; font-weight: bold; background: var(--header); display: flex; align-items: center; justify-content: space-between; cursor: grab; touch-action: none; }
     .window-title { display: flex; align-items: center; gap: 6px; }
     .window-controls { display: flex; gap: 3px; }
@@ -33,19 +54,36 @@
     .cmd-input-line { display: flex; }
     .cmd-prompt { color: #0f0; font-weight: bold; margin-right: 5px; }
     #cmd-input-field { flex-grow: 1; background: transparent; border: 0; outline: 0; color: white; font: inherit; }
-    #taskbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 30px; display: flex; align-items: center; z-index: 99999; background: var(--taskbar); box-shadow: inset 0 1px 1px #ffffff66; }
-    #start-button { height: 100%; width: 100px; border: 0; border-radius: 0 7px 7px 0; color: white; font-weight: bold; font-style: italic; font-size: 17px; background: linear-gradient(#60af47,#398a23); cursor: pointer; }
-    #open-apps-container { display: flex; gap: 4px; margin-left: 10px; }
-    .taskbar-app-btn { height: 24px; padding: 2px 8px; color: white; background: linear-gradient(#3c7be6,#1f4994); border: 1px solid #112a59; border-radius: 3px; cursor: pointer; }
-    #taskbar-right { margin-left: auto; height: 100%; padding: 0 12px; display: flex; align-items: center; color: white; background: linear-gradient(#0f69e4,#0046b7); }
-    #start-menu { position: fixed; display: none; bottom: 30px; left: 0; width: 240px; padding: 6px 0; background: white; border: 2px solid var(--blue); border-radius: 0 5px 0 0; box-shadow: 3px -3px 20px #0006; z-index: 100000; }
+
+    #taskbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 30px; display: flex; align-items: center; z-index: 99999; background: var(--taskbar); box-shadow: inset 0 1px 1px rgba(255,255,255,.4); }
+    #start-button { height: 100%; width: 100px; border: 0; border-top-right-radius: 7px; border-bottom-right-radius: 7px; color: white; font-weight: bold; font-style: italic; font-size: 13pt; background: linear-gradient(#60af47,#398a23); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-shadow: 1px 1px 2px #225511; padding: 0 10px 0 8px; }
+    #start-button:active { background: linear-gradient(#398a23,#296419); }
+    .start-logo { position: relative; width: 16px; height: 14px; flex-shrink: 0; display: inline-block; transform: skewX(-10deg); filter: drop-shadow(0 0 1px rgba(0,0,0,.5)); }
+    .start-pane { position: absolute; width: 7px; height: 6px; border-radius: 2px; }
+    .pane-red { background: linear-gradient(135deg,#ef4c2d,#c42512); top: 0; left: 0; }
+    .pane-green { background: linear-gradient(135deg,#7ecb35,#4d8f20); top: 0; left: 7px; }
+    .pane-blue { background: linear-gradient(135deg,#1b73dc,#1248a8); top: 6px; left: 0; }
+    .pane-yellow { background: linear-gradient(135deg,#ffc12b,#d59b0a); top: 6px; left: 7px; }
+    .start-text { line-height: 1; display: inline-block; transform: translateY(-1px); }
+    #open-apps-container { display: flex; gap: 4px; margin-left: 10px; align-items: center; }
+    .taskbar-app-btn { height: 24px; padding: 2px 8px; color: white; background: linear-gradient(#3c7be6,#1f4994); border: 1px solid #112a59; border-radius: 3px; cursor: pointer; font-size: 10px; }
+    #taskbar-right { margin-left: auto; height: 100%; padding: 0 12px; display: flex; align-items: center; color: white; background: linear-gradient(#0f69e4,#0046b7); font-size: 10px; border-left: 1px solid #0c3374; }
+    #start-menu { position: fixed; display: none; bottom: 30px; left: 0; width: 240px; padding: 6px 0; background: white; border: 2px solid var(--blue); border-radius: 0 5px 0 0; box-shadow: 3px -3px 20px rgba(0,0,0,.4); z-index: 100000; }
     .start-menu-item { padding: 9px 15px; cursor: pointer; color: #333; }
     .start-menu-item:hover { background: #316ac5; color: white; }
-    @media (max-width: 600px) { .window { width: min(90vw, 440px); } #win-notepad, #win-cmd, #win-recycle { left: 5vw; top: 8vh; } }
+    @media (max-width: 600px) { .window { width: min(90vw,440px); } #win-notepad,#win-cmd,#win-recycle { left: 5vw; top: 8vh; } .desktop-icon { width: 74px; } .desktop-icon span:last-child { font-size: 11px; } .windows-word { font-size: 42px; } .boot-footer { padding: 0 12px; font-size: 10px; } }
   </style>
 </head>
 <body>
-  <div id="boot-screen"><div>Windows XP<small>Starting RetroCore...</small></div></div>
+  <div id="boot-screen">
+    <div class="boot-wrap">
+      <div class="xp-logo" aria-hidden="true"><span class="pane red"></span><span class="pane green"></span><span class="pane blue"></span><span class="pane yellow"></span></div>
+      <div class="boot-brand"><div class="microsoft-label">microsoft TM</div><div class="windows-line"><span class="windows-word">Windows</span><span class="xp-word">XP</span></div></div>
+      <div class="boot-progress" aria-label="Loading"><div class="boot-progress-fill"></div></div>
+    </div>
+    <div class="boot-footer"><div class="left">Copyright © Microsoft Corporation</div><div class="right">Microsoft</div></div>
+  </div>
+
   <main id="desktop">
     <div class="desktop-icon" onclick="openWindow('win-notepad')"><span class="icon">📝</span><span>Notepad</span></div>
     <div class="desktop-icon" onclick="openWindow('win-cmd')"><span class="icon">💻</span><span>CMD</span></div>
@@ -59,7 +97,7 @@
 
   <section class="window" id="win-cmd" aria-label="CMD">
     <div class="window-header"><div class="window-title"><span>💻</span> CMD RetroCore Terminal</div><div class="window-controls"><button class="min" onclick="minimizeWindow('win-cmd')" aria-label="Minimize">_</button><button class="close" onclick="closeWindow('win-cmd')" aria-label="Close">X</button></div></div>
-    <div class="window-body" style="padding:0;background:#000"><div class="cmd-box" onclick="document.getElementById('cmd-input-field').focus()"><div id="cmd-history">RetroCore Windows 5.0 [Ultimate Version 2026]\nType 'help' to view commands.</div><div class="cmd-input-line"><span class="cmd-prompt">C:\\Angelo_OS&gt;</span><input id="cmd-input-field" onkeydown="handleCmd(event)" autocomplete="off" /></div></div></div>
+    <div class="window-body" style="padding:0;background:#000"><div class="cmd-box" onclick="document.getElementById('cmd-input-field').focus()"><div id="cmd-history">RetroCore Windows 5.0 [Ultimate Version 2026]\n(C) RetroCore OS Corporation. Type 'help' to view commands.</div><div class="cmd-input-line"><span class="cmd-prompt">C:\\Angelo_OS&gt;</span><input id="cmd-input-field" onkeydown="handleCmd(event)" autocomplete="off" /></div></div></div>
   </section>
 
   <section class="window" id="win-recycle" aria-label="Recycle Bin">
@@ -67,87 +105,45 @@
     <div class="window-body" style="text-align:center"><h3>Recycle Bin</h3><p>Nothing is deleted from this simulation.</p><button class="nav-btn" onclick="alert('Recycle bin has been emptied.')">Empty Recycle Bin</button><div style="margin-top:18px;font-size:30px">🗑️</div></div>
   </section>
 
-  <div id="start-menu">
-    <div class="start-menu-item" onclick="launchFromStart('win-notepad')">📝 Notepad</div>
-    <div class="start-menu-item" onclick="launchFromStart('win-cmd')">💻 CMD</div>
-    <div class="start-menu-item" onclick="launchFromStart('win-recycle')">🗑️ Recycle Bin</div>
-  </div>
-  <footer id="taskbar"><button id="start-button" onclick="toggleStartMenu()">🪟 start</button><div id="open-apps-container"></div><div id="taskbar-right"><span id="digital-clock"></span></div></footer>
+  <div id="start-menu"><div class="start-menu-item" onclick="launchFromStart('win-notepad')">📝 Notepad</div><div class="start-menu-item" onclick="launchFromStart('win-cmd')">💻 CMD</div><div class="start-menu-item" onclick="launchFromStart('win-recycle')">🗑️ Recycle Bin</div></div>
+  <footer id="taskbar">
+    <button id="start-button" onclick="toggleStartMenu()"><span class="start-logo" aria-hidden="true"><span class="start-pane pane-red"></span><span class="start-pane pane-green"></span><span class="start-pane pane-blue"></span><span class="start-pane pane-yellow"></span></span><span class="start-text">start</span></button>
+    <div id="open-apps-container"></div><div id="taskbar-right"><span id="digital-clock"></span></div>
+  </footer>
 
   <script>
-    setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 1200);
+    setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 2800);
     let topZ = 100;
     const openApps = new Set();
     function openWindow(id) {
       const win = document.getElementById(id);
       if (!win) return;
-      win.style.display = 'block';
-      win.style.zIndex = ++topZ;
-      openApps.add(id);
-      renderTaskbarApps();
+      win.style.display = 'block'; win.style.zIndex = ++topZ; openApps.add(id); renderTaskbarApps();
     }
-    function closeWindow(id) {
-      const win = document.getElementById(id);
-      if (win) win.style.display = 'none';
-      openApps.delete(id);
-      renderTaskbarApps();
-    }
+    function closeWindow(id) { const win = document.getElementById(id); if (win) win.style.display = 'none'; openApps.delete(id); renderTaskbarApps(); }
     function minimizeWindow(id) { const win = document.getElementById(id); if (win) win.style.display = 'none'; }
     function renderTaskbarApps() {
-      const container = document.getElementById('open-apps-container');
-      container.replaceChildren();
-      openApps.forEach(id => {
-        const button = document.createElement('button');
-        button.className = 'taskbar-app-btn';
-        button.textContent = id.replace('win-', '').toUpperCase();
-        button.onclick = () => openWindow(id);
-        container.appendChild(button);
-      });
+      const container = document.getElementById('open-apps-container'); container.replaceChildren();
+      openApps.forEach(id => { const button = document.createElement('button'); button.className = 'taskbar-app-btn'; button.textContent = id.replace('win-','').toUpperCase(); button.onclick = () => openWindow(id); container.appendChild(button); });
     }
-    function toggleStartMenu() {
-      const menu = document.getElementById('start-menu');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
+    function toggleStartMenu() { const menu = document.getElementById('start-menu'); menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; }
     function launchFromStart(id) { openWindow(id); document.getElementById('start-menu').style.display = 'none'; }
     function saveNote() { alert('Note saved in this session.'); }
     function handleCmd(event) {
       if (event.key !== 'Enter') return;
-      const input = event.currentTarget;
-      const command = input.value.trim();
-      const history = document.getElementById('cmd-history');
-      const output = command.toLowerCase() === 'help' ? 'Available commands: help, cls, echo <text>, date, time' :
-        command.toLowerCase() === 'date' ? new Date().toLocaleDateString() :
-        command.toLowerCase() === 'time' ? new Date().toLocaleTimeString() :
-        command.toLowerCase() === 'cls' ? '' :
-        command.toLowerCase().startsWith('echo ') ? command.slice(5) :
-        command ? `'${command}' is not recognized. Type 'help' for available commands.` : '';
-      history.textContent = command.toLowerCase() === 'cls' ? '' : `${history.textContent}\nC:\\Angelo_OS>${command}${output ? `\n${output}` : ''}`;
-      input.value = '';
-      document.querySelector('.cmd-box').scrollTop = document.querySelector('.cmd-box').scrollHeight;
+      const input = event.currentTarget; const command = input.value.trim(); const history = document.getElementById('cmd-history');
+      const output = command.toLowerCase() === 'help' ? 'Available commands: help, cls, echo <text>, date, time' : command.toLowerCase() === 'date' ? new Date().toLocaleDateString() : command.toLowerCase() === 'time' ? new Date().toLocaleTimeString() : command.toLowerCase() === 'cls' ? '' : command.toLowerCase().startsWith('echo ') ? command.slice(5) : command ? `'${command}' is not recognized. Type 'help' for available commands.` : '';
+      history.textContent = command.toLowerCase() === 'cls' ? '' : `${history.textContent}\nC:\\Angelo_OS>${command}${output ? `\n${output}` : ''}`; input.value = '';
+      const box = document.querySelector('.cmd-box'); box.scrollTop = box.scrollHeight;
     }
     document.querySelectorAll('.window').forEach(win => {
-      const header = win.querySelector('.window-header');
-      let drag = null;
-      header.addEventListener('pointerdown', event => {
-        if (event.target.closest('button')) return;
-        const rect = win.getBoundingClientRect();
-        drag = { x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
-        header.setPointerCapture(event.pointerId);
-        win.style.zIndex = ++topZ;
-      });
-      header.addEventListener('pointermove', event => {
-        if (!drag) return;
-        win.style.left = `${Math.max(0, drag.left + event.clientX - drag.x)}px`;
-        win.style.top = `${Math.max(0, drag.top + event.clientY - drag.y)}px`;
-      });
-      const endDrag = () => { drag = null; };
-      header.addEventListener('pointerup', endDrag);
-      header.addEventListener('pointercancel', endDrag);
-      header.addEventListener('lostpointercapture', endDrag);
+      const header = win.querySelector('.window-header'); let drag = null;
+      header.addEventListener('pointerdown', event => { if (event.target.closest('button')) return; const rect = win.getBoundingClientRect(); drag = { x: event.clientX, y: event.clientY, left: rect.left, top: rect.top }; header.setPointerCapture(event.pointerId); win.style.zIndex = ++topZ; });
+      header.addEventListener('pointermove', event => { if (!drag) return; win.style.left = `${Math.max(0,drag.left + event.clientX - drag.x)}px`; win.style.top = `${Math.max(0,drag.top + event.clientY - drag.y)}px`; });
+      const endDrag = () => { drag = null; }; header.addEventListener('pointerup', endDrag); header.addEventListener('pointercancel', endDrag); header.addEventListener('lostpointercapture', endDrag);
     });
     function updateClock() { document.getElementById('digital-clock').textContent = new Date().toLocaleTimeString(); }
-    updateClock();
-    setInterval(updateClock, 1000);
+    updateClock(); setInterval(updateClock, 1000);
   </script>
 </body>
 </html>
